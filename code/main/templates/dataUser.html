@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistik User & Course</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px;
+            color: #000;
+        }
+        h1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 15px 0 10px;
+        }
+        .summary-card {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 0 auto 20px;
+            max-width: 800px;
+            flex-wrap: wrap;
+        }
+        .summary-item {
+            font-size: 14px;
+            text-align: center;
+        }
+        .summary-item strong {
+            display: block;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border-bottom: 2px solid #999;
+        }
+        p {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Statistik User & Course</h1>
+
+    <h2 style="text-align: center;">Ringkasan</h2>
+    <div class="summary-card">
+        <div class="summary-item">
+            <strong>Jumlah user yang membuat course</strong>
+            {{ users_with_courses }}
+        </div>
+        <div class="summary-item">
+            <strong>Jumlah user yang tidak memiliki course</strong>
+            {{ users_without_courses }}
+        </div>
+        <div class="summary-item">
+            <strong>Rata-rata jumlah course per user</strong>
+            {{ avg_courses_per_user|default:"0" }}
+        </div>
+        <div class="summary-item">
+            <strong>User dengan course terbanyak</strong>
+            {% if user_with_most_courses %}
+                {{ user_with_most_courses.username }}
+            {% else %}
+                Tidak ada data
+            {% endif %}
+        </div>
+    </div>
+
+    <h2>User yang tidak mengikuti course</h2>
+    {% if users_without_subscriptions %}
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users_without_subscriptions %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>Semua user mengikuti setidaknya satu course.</p>
+    {% endif %}
+
+</body>
+</html>
